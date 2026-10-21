@@ -1,0 +1,171 @@
+/*
+ * Scheda personale — telefono, al buio, una mano sola.
+ * Fondo quasi nero e testo color carta smorzato: niente bianco pieno che abbaglia.
+ */
+
+:root {
+  --fondo: #0d0b0a;
+  --fondo-2: #171310;
+  --linea: #2e2721;
+  --testo: #ddd0b8;
+  --testo-tenue: #8f8370;
+  --carta: #e8dcc2;
+  --accento: #e0553b;
+  --macchina: "Courier New", Courier, monospace;
+  --serif: Georgia, "Times New Roman", serif;
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+
+html { -webkit-text-size-adjust: 100%; }
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background: var(--fondo);
+  color: var(--testo);
+  font-family: var(--serif);
+  font-size: 20px;
+  line-height: 1.55;
+  -webkit-tap-highlight-color: transparent;
+}
+
+h1, h2, h3, p { margin: 0; }
+
+.etichetta {
+  font-family: var(--macchina);
+  font-weight: bold;
+  font-size: 14px;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  color: var(--accento);
+}
+
+.attesa, .chiuso { padding: 30vh 24px 0; text-align: center; color: var(--testo-tenue); }
+.chiuso { display: grid; gap: 14px; font-size: 20px; }
+
+/* ---------- testata fissa ---------- */
+
+.testa {
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 16px calc(12px) 18px;
+  padding-top: max(12px, env(safe-area-inset-top));
+  background: var(--fondo-2);
+  border-bottom: 1px solid var(--linea);
+}
+.chi { flex: 1; min-width: 0; }
+.chi h1 { font-size: 22px; line-height: 1.2; color: var(--carta); }
+.chi p { font-size: 15px; color: var(--testo-tenue); font-style: italic; }
+
+button {
+  min-height: 48px;
+  padding: 0 18px;
+  border: 2px solid var(--accento);
+  border-radius: 4px;
+  background: transparent;
+  color: var(--carta);
+  font-family: var(--macchina);
+  font-weight: bold;
+  font-size: 15px;
+  letter-spacing: .04em;
+  touch-action: manipulation;
+}
+button:active { background: var(--accento); color: var(--fondo); }
+button:disabled { opacity: .5; }
+.dico { flex: none; }
+
+/* ---------- contenuto ---------- */
+
+main { padding: 20px 18px calc(40px + env(safe-area-inset-bottom)); display: grid; grid-template-columns: minmax(0, 1fr); gap: 18px; }
+
+.episodio {
+  font-family: var(--macchina);
+  font-size: 17px;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  color: var(--testo-tenue);
+  padding-bottom: 6px;
+  border-bottom: 1px dashed var(--linea);
+}
+
+.blocco { display: grid; grid-template-columns: minmax(0, 1fr); gap: 8px; padding: 16px 16px 18px; background: var(--fondo-2); border-left: 3px solid var(--linea); }
+.blocco .testo { font-size: 20px; white-space: pre-line; }
+.bugia { border-left-color: var(--accento); }
+
+.missioni { list-style: none; margin: 0; padding: 0; display: grid; gap: 4px; }
+.missioni label { display: flex; align-items: flex-start; gap: 14px; padding: 10px 0; min-height: 48px; }
+.missioni input {
+  flex: none;
+  appearance: none;
+  -webkit-appearance: none;
+  width: 30px;
+  height: 30px;
+  margin: 0;
+  border: 2px solid var(--testo-tenue);
+  border-radius: 3px;
+  background: transparent;
+  display: grid;
+  place-content: center;
+}
+.missioni input:checked { border-color: var(--accento); background: var(--accento); }
+.missioni input:checked::after { content: "✓"; color: var(--fondo); font-weight: bold; font-size: 20px; line-height: 1; }
+.missioni input:checked + span { color: var(--testo-tenue); text-decoration: line-through; }
+
+.precedente { border-top: 1px solid var(--linea); padding-top: 6px; }
+.precedente summary {
+  min-height: 48px;
+  display: flex;
+  align-items: center;
+  font-family: var(--macchina);
+  font-size: 16px;
+  color: var(--testo-tenue);
+  text-transform: uppercase;
+  letter-spacing: .06em;
+}
+.precedente[open] { display: grid; gap: 14px; }
+
+.sigillato { display: grid; grid-template-columns: minmax(0, 1fr); gap: 12px; padding: 16px; border: 1px dashed var(--linea); }
+.sigillato .etichetta { color: var(--testo-tenue); }
+.sigillato form { display: flex; gap: 10px; }
+.sigillato input {
+  flex: 1;
+  min-width: 0;
+  min-height: 48px;
+  padding: 0 12px;
+  border: 0;
+  border-bottom: 2px solid var(--testo-tenue);
+  border-radius: 0;
+  background: transparent;
+  color: var(--carta);
+  font-family: var(--macchina);
+  font-size: 20px;
+  outline: none;
+}
+.sigillato input:focus { border-bottom-color: var(--accento); }
+.esito { min-height: 1.2em; font-family: var(--macchina); font-size: 16px; color: var(--accento); }
+.nota { color: var(--testo-tenue); font-size: 17px; }
+
+.piede { text-align: center; color: var(--testo-tenue); font-size: 14px; font-family: var(--macchina); margin-top: 10px; }
+
+/* ---------- "cosa dico di me": tutto schermo, da leggere ad alta voce ---------- */
+
+.pubblico {
+  position: fixed;
+  inset: 0;
+  z-index: 5;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: max(28px, env(safe-area-inset-top)) 22px calc(22px + env(safe-area-inset-bottom));
+  background: var(--fondo);
+  overflow: auto;
+}
+.pubblico h2 { font-size: 28px; color: var(--carta); }
+.pubblico .testo { flex: 1; font-size: 25px; line-height: 1.5; white-space: pre-line; }
+.pubblico .chiudi { min-height: 60px; font-size: 18px; }

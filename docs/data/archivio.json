@@ -1,0 +1,75 @@
+{
+  "schede": { "chat": 1, "galleria": 2, "note": 3 },
+  "stato": {
+    "proprietario": "Edoardo Valsecchi",
+    "modello": "Smartphone, scocca incrinata",
+    "rinvenuto": "Sotto la poltrona della biblioteca, 23:38",
+    "ora": "23:41",
+    "batteria": 7,
+    "operatore": "TIM"
+  },
+  "chat": [
+    {
+      "id": "sconosciuto",
+      "episodio": 1,
+      "contatto": "+39 347 ••• 2291",
+      "ultimo_accesso": "oggi alle 22:44",
+      "non_letti": 2,
+      "messaggi": [
+        { "giorno": "Oggi" },
+        { "da": "loro", "testo": "So cosa c'è nella cassetta di sicurezza.", "ora": "19:03" },
+        { "da": "io", "testo": "Chi parla?", "ora": "19:15", "stato": "letto" },
+        { "da": "loro", "testo": "Stasera, dopo il caffè. Da solo.", "ora": "19:16" },
+        { "da": "io", "testo": "Non tratto con chi non ha un nome.", "ora": "19:40", "stato": "letto" },
+        { "da": "loro", "testo": "Allora lo saprà anche tua nipote.", "ora": "22:41" },
+        { "da": "loro", "testo": "Hai dieci minuti.", "ora": "22:44" }
+      ]
+    },
+    {
+      "id": "clara",
+      "episodio": 1,
+      "contatto": "Clara",
+      "ultimo_accesso": "oggi alle 22:39",
+      "bozza": "Non posso più coprirti. Domani dico tutto a",
+      "messaggi": [
+        { "giorno": "Ieri" },
+        { "da": "loro", "testo": "Zio, domani porto Marco. Ti prego, sii gentile.", "ora": "20:11" },
+        { "da": "io", "testo": "Sono sempre gentile con chi non mi chiede soldi.", "ora": "21:02", "stato": "letto" },
+        { "da": "loro", "testo": "Non è così e lo sai.", "ora": "21:03" },
+        { "giorno": "Oggi" },
+        { "da": "loro", "testo": "Dove sei? Ti cercano tutti in salone", "ora": "22:20" },
+        { "da": "loro", "testo": "Zio??", "ora": "22:36" },
+        { "da": "io", "testo": "In biblioteca. Non far salire nessuno.", "ora": "22:38", "stato": "letto" }
+      ]
+    },
+    {
+      "id": "famiglia",
+      "episodio": 1,
+      "contatto": "Villa — personale",
+      "gruppo": true,
+      "ultimo_accesso": "",
+      "non_letti": 1,
+      "messaggi": [
+        { "giorno": "Oggi" },
+        { "da": "Ada", "testo": "Il colonnello chiede il cognac del '68. Lo prendo in cantina?", "ora": "21:34" },
+        { "da": "io", "testo": "No. Quello resta dov'è.", "ora": "21:36", "stato": "letto" },
+        { "da": "Dario", "testo": "La macchina è pronta per le 23:30 come chiesto.", "ora": "21:50" },
+        { "da": "Lidia", "testo": "Il dolce è servito, signor conte.", "ora": "22:15" }
+      ]
+    },
+    {
+      "id": "castellani",
+      "episodio": 1,
+      "contatto": "Dott. Castellani",
+      "ultimo_accesso": "oggi alle 20:05",
+      "messaggi": [
+        { "giorno": "Martedì" },
+        { "da": "loro", "testo": "Gli esami sono arrivati. Preferisco parlartene a voce.", "ora": "11:20" },
+        { "da": "io", "testo": "Giovedì sera, alla cena. Dopo.", "ora": "11:48", "stato": "letto" },
+        { "da": "loro", "testo": "Edoardo, non è una cosa da rimandare.", "ora": "11:49" }
+      ]
+    }
+  ],
+  "galleria": [],
+  "note": []
+}

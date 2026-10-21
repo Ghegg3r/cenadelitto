@@ -1,0 +1,8 @@
+# Materiale segreto: non deve MAI finire nel repository.
+# Tutto ciò che è in chiaro e riservato vive in locale/:
+#   personaggi.json (fonte delle schede), episodio-N.json (episodi in chiaro),
+#   schede.md (elenco slug -> nome -> link), immagini/video degli episodi futuri.
+locale/
+*.secret
+*.plain.*
+.env

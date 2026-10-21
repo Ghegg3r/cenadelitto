@@ -1,0 +1,12 @@
+{
+  "luogo": "Villa Valsecchi",
+  "data": "30 ottobre",
+  "ora_morte": "22:47",
+  "didascalia_morte": "Ora presunta del decesso",
+  "fasce": ["21:00", "21:30", "22:00", "22:30", "23:00", "23:30"],
+  "episodi": [
+    { "n": 1, "titolo": "Il ricevimento" },
+    { "n": 2, "file": "data/episodio-2.enc.json" },
+    { "n": 3, "file": "data/episodio-3.enc.json" }
+  ]
+}

@@ -1,0 +1,38 @@
+[
+  {
+    "id": "R01",
+    "episodio": 1,
+    "titolo": "Bicchiere da cognac",
+    "didascalia": "Sul tavolino della biblioteca. Residuo ambrato sul fondo, un'impronta di rossetto sul bordo.",
+    "ora": "23:05",
+    "luogo": "Biblioteca",
+    "img": "assets/img/prove/bicchiere.svg"
+  },
+  {
+    "id": "R02",
+    "episodio": 1,
+    "titolo": "Chiave d'ottone",
+    "didascalia": "Nella tasca del panciotto della vittima. Non apre nessuna porta del piano terra.",
+    "ora": "23:12",
+    "luogo": "Studio",
+    "img": "assets/img/prove/chiave.svg"
+  },
+  {
+    "id": "R03",
+    "episodio": 1,
+    "titolo": "Lettera strappata",
+    "didascalia": "Metà di una lettera nel camino spento. Leggibile solo: «…non dopo stasera».",
+    "ora": "23:20",
+    "luogo": "Salone",
+    "img": "assets/img/prove/lettera.svg"
+  },
+  {
+    "id": "R04",
+    "episodio": 1,
+    "titolo": "Orologio da taschino",
+    "didascalia": "Della vittima. Vetro incrinato, lancette ferme.",
+    "ora": "23:31",
+    "luogo": "Biblioteca",
+    "img": "assets/img/prove/orologio.svg"
+  }
+]

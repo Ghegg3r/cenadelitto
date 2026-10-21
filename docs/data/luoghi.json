@@ -1,0 +1,14 @@
+[
+  { "nome": "Salone", "alias": ["salotto", "soggiorno"] },
+  { "nome": "Sala da pranzo", "alias": ["pranzo", "sala pranzo", "tavola"] },
+  { "nome": "Biblioteca", "alias": ["libreria"] },
+  { "nome": "Studio", "alias": ["ufficio", "studio del conte"] },
+  { "nome": "Cucina", "alias": ["dispensa"] },
+  { "nome": "Cantina", "alias": ["cantine"] },
+  { "nome": "Serra", "alias": ["limonaia"] },
+  { "nome": "Giardino", "alias": ["parco", "viale"] },
+  { "nome": "Terrazza", "alias": ["balcone", "loggia"] },
+  { "nome": "Scalone", "alias": ["scale", "atrio", "ingresso"] },
+  { "nome": "Camera padronale", "alias": ["camera del conte", "camera da letto"] },
+  { "nome": "Rimessa", "alias": ["garage", "autorimessa"] }
+]

@@ -1,0 +1,26 @@
+[
+  {
+    "id": "M01",
+    "episodio": 1,
+    "tipo": "audio",
+    "titolo": "Segreteria telefonica",
+    "sottotitolo": "Messaggio registrato alle 21:12",
+    "src": "assets/media/segreteria.mp3"
+  },
+  {
+    "id": "M02",
+    "episodio": 1,
+    "tipo": "video",
+    "titolo": "Telecamera del cancello",
+    "sottotitolo": "CAM 02 — dalle 21:58",
+    "src": "assets/media/cancello.mp4"
+  },
+  {
+    "id": "M03",
+    "episodio": 1,
+    "tipo": "audio",
+    "titolo": "Telefonata interrotta",
+    "sottotitolo": "Linea dello studio, 22:31",
+    "src": "assets/media/telefonata.mp3"
+  }
+]

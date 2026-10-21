@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex,nofollow">
+  <meta name="referrer" content="no-referrer">
+  <title>Fascicolo</title>
+  <link rel="stylesheet" href="assets/css/schermo.css">
+</head>
+<body data-vista="1">
+  <header class="testata">
+    <div class="testata-sx"><span class="etichetta">Fascicolo</span> <span id="testata-luogo"></span></div>
+    <h1 id="testata-titolo"></h1>
+    <div class="testata-dx" id="testata-episodio"></div>
+  </header>
+
+  <main>
+    <section class="vista" id="vista-1" aria-label="Bacheca"></section>
+    <section class="vista" id="vista-2" aria-label="Timeline" hidden></section>
+    <section class="vista" id="vista-3" aria-label="Media" hidden></section>
+    <section class="vista" id="vista-4" aria-label="Orologio" hidden></section>
+    <section class="vista" id="vista-5" aria-label="Archivio" hidden></section>
+  </main>
+
+  <footer class="tasti" id="tasti"></footer>
+
+  <div class="overlay" id="sblocco" hidden>
+    <form class="sblocco-scheda" id="sblocco-form" autocomplete="off">
+      <p class="etichetta" id="sblocco-titolo"></p>
+      <input type="password" id="sblocco-input" autocomplete="off" spellcheck="false" aria-label="Passphrase">
+      <p class="sblocco-esito" id="sblocco-esito"></p>
+      <p class="sblocco-aiuto">Invio per aprire · Esc per chiudere</p>
+    </form>
+  </div>
+
+  <div class="overlay overlay-scuro" id="ingrandimento" hidden>
+    <figure class="ingrandimento">
+      <img id="ingrandimento-img" alt="">
+      <figcaption>
+        <p class="etichetta accento" id="ingrandimento-etichetta"></p>
+        <h2 id="ingrandimento-titolo"></h2>
+        <p id="ingrandimento-testo"></p>
+        <p class="ingrandimento-meta" id="ingrandimento-meta"></p>
+      </figcaption>
+    </figure>
+  </div>
+
+  <div class="avviso" id="avviso" hidden></div>
+
+  <script src="assets/js/cripta.js"></script>
+  <script src="assets/js/offline.js"></script>
+  <script src="assets/js/schermo.js"></script>
+  <script src="assets/js/vista-bacheca.js"></script>
+  <script src="assets/js/vista-timeline.js"></script>
+  <script src="assets/js/vista-media.js"></script>
+  <script src="assets/js/vista-orologio.js"></script>
+  <script src="assets/js/vista-archivio.js"></script>
+</body>
+</html>
