@@ -3,16 +3,13 @@
  * Server statico di prova per /docs (nessuna dipendenza).
  *   node scripts/serve.js            -> http://localhost:8080
  *   node scripts/serve.js 8080 lan   -> raggiungibile anche dai telefoni sulla stessa rete
+ * Usato anche da scripts/regia.js (statico()).
  */
 'use strict';
 
 const http = require('node:http');
 const fs = require('node:fs');
 const path = require('node:path');
-
-const RADICE = path.join(__dirname, '..', 'docs');
-const PORTA = parseInt(process.argv[2] || '8080', 10);
-const HOST = process.argv[3] === 'lan' ? '0.0.0.0' : '127.0.0.1';
 
 const TIPI = {
   '.html': 'text/html; charset=utf-8', '.css': 'text/css; charset=utf-8',
@@ -22,11 +19,11 @@ const TIPI = {
   '.wav': 'audio/wav', '.ogg': 'audio/ogg', '.m4a': 'audio/mp4', '.txt': 'text/plain; charset=utf-8'
 };
 
-http.createServer((req, res) => {
-  let rel = decodeURIComponent(new URL(req.url, 'http://x').pathname);
+// Serve il file `rel` dalla cartella `radice`, con supporto Range per audio e video.
+function statico(radice, rel, req, res) {
   if (rel.endsWith('/')) rel += 'index.html';
-  const file = path.join(RADICE, rel);
-  if (!file.startsWith(RADICE)) { res.writeHead(403).end(); return; }
+  const file = path.join(radice, rel);
+  if (!file.startsWith(radice)) { res.writeHead(403).end(); return; }
 
   fs.stat(file, (err, st) => {
     if (err || !st.isFile()) { res.writeHead(404, { 'Content-Type': 'text/plain' }).end('404'); return; }
@@ -45,6 +42,17 @@ http.createServer((req, res) => {
     res.writeHead(200, { 'Content-Type': tipo, 'Content-Length': st.size, 'Accept-Ranges': 'bytes', 'Cache-Control': 'no-cache' });
     fs.createReadStream(file).pipe(res);
   });
-}).listen(PORTA, HOST, () => {
-  console.log(`Sito su http://${HOST === '0.0.0.0' ? '<ip-del-portatile>' : 'localhost'}:${PORTA}/  (Ctrl+C per fermare)`);
-});
+}
+
+module.exports = { statico };
+
+if (require.main === module) {
+  const RADICE = path.join(__dirname, '..', 'docs');
+  const PORTA = parseInt(process.argv[2] || '8080', 10);
+  const HOST = process.argv[3] === 'lan' ? '0.0.0.0' : '127.0.0.1';
+  http.createServer((req, res) => {
+    statico(RADICE, decodeURIComponent(new URL(req.url, 'http://x').pathname), req, res);
+  }).listen(PORTA, HOST, () => {
+    console.log(`Sito su http://${HOST === '0.0.0.0' ? '<ip-del-portatile>' : 'localhost'}:${PORTA}/  (Ctrl+C per fermare)`);
+  });
+}

@@ -5,7 +5,7 @@
  *
  * Clic (o frecce + Invio) per scrivere in una cella. Invio salva, Tab salva e
  * passa alla fascia successiva, Esc annulla, Canc svuota la cella selezionata.
- * Ctrl+Maiusc+Backspace azzera tutta la timeline (chiede conferma).
+ * Ctrl+Maiusc+Backspace azzera tutta la timeline (chiede conferma); in regia solo dal telefono.
  */
 (function () {
   'use strict';
@@ -198,6 +198,13 @@
     input.addEventListener('blur', function () { chiudi(true); });
   }
 
+  function azzera() {
+    dati = {};
+    salva();
+    ultimoConteggio = 0;
+    aggiorna();
+  }
+
   function tasto(e) {
     if (inModifica) return false;
     var mosse = { ArrowUp: [-1, 0], ArrowDown: [1, 0], ArrowLeft: [0, -1], ArrowRight: [0, 1] };
@@ -210,7 +217,7 @@
       return true;
     }
     if (e.key === 'Backspace' && e.ctrlKey && e.shiftKey) {
-      if (confirm('Azzerare tutta la timeline?')) { dati = {}; salva(); ultimoConteggio = 0; aggiorna(); }
+      if (!Schermo.inRegia() && confirm('Azzerare tutta la timeline?')) azzera();
       return true;
     }
     return false;
@@ -218,6 +225,8 @@
 
   Schermo.registra(2, {
     nome: 'Timeline',
+    giocatori: true,
+    comandi: { azzera: function () { azzera(); } },
     init: function (el, s) {
       stato = s;
       radice = el;

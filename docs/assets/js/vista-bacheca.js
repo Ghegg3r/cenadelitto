@@ -75,6 +75,7 @@
 
   Schermo.registra(1, {
     nome: 'Bacheca',
+    giocatori: true,
     init: function (el) {
       radice = el;
       griglia = radice.appendChild(Schermo.el('div', 'bacheca'));

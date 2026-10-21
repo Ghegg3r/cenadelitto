@@ -1,0 +1,136 @@
+/*
+ * Console di regia — telefono dell'organizzatore, al buio, in tasca tra un comando e l'altro.
+ * Stessa palette delle schede personali.
+ */
+
+:root {
+  --fondo: #0d0b0a;
+  --fondo-2: #171310;
+  --linea: #2e2721;
+  --testo: #ddd0b8;
+  --testo-tenue: #8f8370;
+  --carta: #e8dcc2;
+  --accento: #e0553b;
+  --ok: #9fb37a;
+  --macchina: "Courier New", Courier, monospace;
+  --sans: -apple-system, "Segoe UI", Roboto, sans-serif;
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+[hidden] { display: none !important; }
+
+body {
+  margin: 0;
+  background: var(--fondo);
+  color: var(--testo);
+  font-family: var(--sans);
+  font-size: 17px;
+  line-height: 1.4;
+  -webkit-tap-highlight-color: transparent;
+}
+
+h2, p { margin: 0; }
+
+.etichetta {
+  font-family: var(--macchina);
+  font-weight: bold;
+  font-size: 13px;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  color: var(--accento);
+}
+.tenue { color: var(--testo-tenue); font-size: 14px; }
+
+button {
+  min-height: 52px;
+  padding: 0 14px;
+  border: 1px solid var(--linea);
+  border-radius: 6px;
+  background: var(--fondo-2);
+  color: var(--carta);
+  font: inherit;
+  font-weight: 600;
+  touch-action: manipulation;
+}
+button:active { background: var(--accento); color: var(--fondo); }
+button:disabled { opacity: .35; }
+.primario { border-color: var(--accento); }
+.grande { width: 100%; min-height: 72px; border: 2px solid var(--accento); font-size: 20px; text-align: left; padding: 0 18px; }
+.discreto { color: var(--testo-tenue); }
+.pieno { width: 100%; }
+
+input {
+  flex: 1;
+  min-width: 0;
+  min-height: 52px;
+  padding: 0 12px;
+  border: 1px solid var(--linea);
+  border-radius: 6px;
+  background: var(--fondo-2);
+  color: var(--carta);
+  font-family: var(--macchina);
+  font-size: 19px;
+  outline: none;
+}
+input:focus { border-color: var(--accento); }
+
+.esito { min-height: 1.3em; font-family: var(--macchina); font-size: 15px; }
+.esito.ok { color: var(--ok); }
+.esito.ko { color: var(--accento); }
+
+/* ---------- accesso ---------- */
+
+.accesso { display: grid; gap: 14px; padding: 24vh 24px 0; }
+.accesso input { text-align: center; font-size: 30px; letter-spacing: .4em; }
+
+/* ---------- testata ---------- */
+
+.testa {
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  padding: max(12px, env(safe-area-inset-top)) 16px 12px;
+  background: var(--fondo-2);
+  border-bottom: 1px solid var(--linea);
+}
+.testa-dx { text-align: right; font-weight: 600; }
+.collegamento { font-size: 14px; color: var(--testo-tenue); }
+.collegamento::before { content: "● "; }
+.collegamento.ok::before { color: var(--ok); }
+.collegamento.ko::before { color: var(--accento); }
+
+main { display: grid; grid-template-columns: minmax(0, 1fr); gap: 26px; padding: 18px 16px calc(40px + env(safe-area-inset-bottom)); }
+section { display: grid; gap: 10px; }
+
+.avviso { padding: 12px 14px; border-left: 4px solid var(--accento); background: var(--fondo-2); }
+
+/* ---------- in onda ---------- */
+
+.onda { padding: 14px; border: 2px solid var(--accento); border-radius: 8px; background: var(--fondo-2); }
+.onda h2 { font-size: 21px; }
+.barra { height: 6px; background: var(--linea); border-radius: 3px; overflow: hidden; }
+.barra div { height: 100%; width: 0; background: var(--accento); }
+.griglia-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
+.griglia-4 button { padding: 0 4px; font-size: 15px; }
+
+/* ---------- scaletta, media, viste ---------- */
+
+.scaletta { list-style: none; margin: 0; padding: 0; display: grid; gap: 6px; }
+.scaletta button { width: 100%; text-align: left; display: flex; justify-content: space-between; align-items: center; gap: 10px; }
+.scaletta .fatto button { color: var(--testo-tenue); text-decoration: line-through; }
+.scaletta .dettaglio { font-weight: 400; font-size: 13px; color: var(--testo-tenue); text-decoration: none; }
+
+.elenco { list-style: none; margin: 0; padding: 0; display: grid; gap: 6px; }
+.elenco button { width: 100%; text-align: left; display: grid; padding: 8px 14px; }
+.elenco small { font-weight: 400; color: var(--testo-tenue); }
+.elenco .vuoto { color: var(--testo-tenue); font-style: italic; }
+
+.griglia-viste { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+.griglia-viste button.attiva { border-color: var(--accento); color: var(--accento); }
+
+.riga { display: flex; gap: 8px; }

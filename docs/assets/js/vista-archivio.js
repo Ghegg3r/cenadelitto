@@ -201,6 +201,7 @@
 
   Schermo.registra(5, {
     nome: 'Archivio',
+    giocatori: true,
     init: function (el_, s) {
       stato = s;
       radice = el_;

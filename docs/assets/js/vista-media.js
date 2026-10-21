@@ -3,12 +3,13 @@
  * Nessun autoplay: si avvia solo con Spazio (o clic su ▶).
  * Frecce su/giù per scegliere, Invio per portarlo sul palco, Spazio play/pausa,
  * frecce sinistra/destra ±5 s, R ricomincia, Esc torna all'elenco.
+ * In regia la vista è riservata: la comanda solo il telefono (comandi.*).
  */
 (function () {
   'use strict';
 
   var radice, lista, palco, player, schedaAudio, titolo, sottotitolo, tempo, durata, avanzamento, invito;
-  var elenco = [], scelto = 0, caricato = null;
+  var elenco = [], scelto = 0, caricato = null, ultimoAvviso = 0, errore = '';
 
   function formato(s) {
     if (!isFinite(s)) return '0:00';
@@ -61,7 +62,31 @@
 
   function playPausa() {
     if (!radice.classList.contains('sul-palco')) carica();
-    if (player.paused) player.play().catch(function () {}); else player.pause();
+    if (player.paused) riproduci(); else player.pause();
+  }
+
+  function suona(id) {
+    var i = elenco.findIndex(function (m) { return m.id === id; });
+    if (i < 0) return;
+    Schermo.mostra(3);
+    scegli(i);
+    carica();
+    player.currentTime = 0;
+    riproduci();
+  }
+
+  function riproduci() {
+    errore = '';
+    player.play().catch(function () {
+      errore = "Il browser ha bloccato l'audio: clicca una volta sullo schermo.";
+      Schermo.notifica();
+    });
+  }
+
+  function inOnda() {
+    if (!caricato || !radice.classList.contains('sul-palco')) return null;
+    return { id: caricato.id, titolo: caricato.titolo, tempo: player.currentTime, durata: player.duration || 0,
+      inPausa: player.paused, finito: player.ended, errore: errore };
   }
 
   function aggiornaStato() {
@@ -70,6 +95,10 @@
     avanzamento.style.width = (player.duration ? player.currentTime / player.duration * 100 : 0) + '%';
     invito.hidden = !player.paused;
     invito.textContent = player.ended ? '↺  R per ricominciare' : '▶  Spazio';
+    invito.classList.toggle('in-regia', Schermo.inRegia());
+    // La console del telefono segue l'avanzamento, una volta al secondo basta.
+    var ora = Date.now();
+    if (ora - ultimoAvviso > 900 || player.paused) { ultimoAvviso = ora; Schermo.notifica(); }
   }
 
   function tasto(e) {
@@ -112,13 +141,22 @@
       durata = barra.appendChild(Schermo.el('span', null, '0:00'));
       invito = palco.appendChild(Schermo.el('div', 'media-invito'));
 
-      palco.addEventListener('click', playPausa);
+      palco.addEventListener('click', function () { if (!Schermo.inRegia()) playPausa(); });
       ['timeupdate', 'loadedmetadata', 'play', 'pause', 'ended', 'seeked'].forEach(function (t) {
         player.addEventListener(t, aggiornaStato);
       });
     },
     render: render,
     esci: scendi,
+    elenco: function () { return elenco.map(function (m) { return { id: m.id, titolo: m.titolo, tipo: m.tipo, sottotitolo: m.sottotitolo || '' }; }); },
+    inOnda: inOnda,
+    comandi: {
+      suona: suona,
+      pausa: function () { if (radice.classList.contains('sul-palco')) { if (player.paused) riproduci(); else player.pause(); } },
+      ricomincia: function () { player.currentTime = 0; aggiornaStato(); },
+      salta: function (s) { player.currentTime = Math.max(0, Math.min(player.duration || 0, player.currentTime + s)); },
+      chiudi: scendi
+    },
     tasto: tasto
   });
 })();

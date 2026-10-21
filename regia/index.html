@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="robots" content="noindex,nofollow">
+  <meta name="theme-color" content="#0d0b0a">
+  <title>Regia</title>
+  <link rel="stylesheet" href="console.css">
+</head>
+<body>
+  <form id="accesso" class="accesso" hidden autocomplete="off">
+    <p class="etichetta">Regia</p>
+    <label for="pin">PIN (lo stampa il portatile all'avvio)</label>
+    <input id="pin" inputmode="numeric" pattern="[0-9]*" maxlength="6" autocomplete="off">
+    <button>Entra</button>
+    <p class="esito" id="accesso-esito"></p>
+  </form>
+
+  <div id="console" hidden>
+    <header class="testa">
+      <div>
+        <p class="etichetta">Regia</p>
+        <p id="collegamento" class="collegamento">Collegamento…</p>
+      </div>
+      <div class="testa-dx">
+        <p id="episodio"></p>
+        <p id="vista-attuale" class="tenue"></p>
+      </div>
+    </header>
+
+    <main>
+      <p id="avviso" class="avviso" hidden></p>
+
+      <section id="onda" class="onda" hidden>
+        <p class="etichetta">In onda</p>
+        <h2 id="onda-titolo"></h2>
+        <div class="barra"><div id="onda-avanzamento"></div></div>
+        <p id="onda-tempo" class="tenue"></p>
+        <div class="griglia-4">
+          <button data-comando="media-salta" data-secondi="-10">−10 s</button>
+          <button data-comando="media-pausa" id="onda-pausa" class="primario">Pausa</button>
+          <button data-comando="media-salta" data-secondi="10">+10 s</button>
+          <button data-comando="media-ricomincia">Da capo</button>
+        </div>
+        <button data-comando="media-chiudi" class="pieno">Chiudi e torna alla bacheca</button>
+      </section>
+
+      <section id="sezione-scaletta" hidden>
+        <p class="etichetta">Scaletta</p>
+        <button id="prossimo" class="grande"></button>
+        <ol id="scaletta" class="scaletta"></ol>
+        <button id="scaletta-azzera" class="discreto">Ricomincia la scaletta</button>
+      </section>
+
+      <section>
+        <p class="etichetta">Media</p>
+        <ul id="media" class="elenco"></ul>
+      </section>
+
+      <section>
+        <p class="etichetta">Schermo</p>
+        <div id="viste" class="griglia-viste"></div>
+      </section>
+
+      <section>
+        <p class="etichetta" id="sblocco-titolo">Episodi</p>
+        <form id="sblocco" class="riga" autocomplete="off">
+          <input id="passphrase" placeholder="Passphrase" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false">
+          <button>Apri</button>
+        </form>
+        <p class="esito" id="sblocco-esito"></p>
+      </section>
+
+      <section>
+        <p class="etichetta">Timeline</p>
+        <button id="azzera" class="discreto pieno">Azzera la timeline</button>
+      </section>
+    </main>
+  </div>
+
+  <script src="console.js"></script>
+</body>
+</html>

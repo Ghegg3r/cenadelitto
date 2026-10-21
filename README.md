@@ -22,7 +22,9 @@ docs/                       -> pubblicato su GitHub Pages
 scripts/
   build-schede.js           genera le schede da locale/personaggi.json
   cifra.js                  cifra un episodio per lo schermo centrale
+  regia.js                  la serata: serve il sito e collega la console del telefono
   serve.js                  server di prova locale
+regia/                      console di regia per il telefono (servita solo da regia.js)
 locale/                     PRIVATO, ignorato da git: soluzione, episodi in chiaro, elenco link
 ```
 
@@ -39,6 +41,58 @@ Poi apri http://localhost:8080/. Il sito non funziona aprendo il file con doppio
 I telefoni non possono provare le schede via `http://<ip-del-portatile>`: la decifratura
 richiede una connessione sicura (https o localhost). Per provarle su un telefono usa il sito
 pubblicato su GitHub Pages.
+
+## La serata: regia dal telefono
+
+L'organizzatore dirige dal proprio telefono; lo schermo sul portatile resta a disposizione
+dei giocatori. Serve un programma acceso sul portatile:
+
+```bash
+node scripts/regia.js
+```
+
+All'avvio stampa tre cose: l'indirizzo dello **schermo** (`http://localhost:8080/`, da aprire
+sul portatile collegato alla TV), l'indirizzo della **console** (`http://<ip>:8080/regia/`, da
+aprire sul telefono) e il **PIN** della console (resta uguale tra un avvio e l'altro; sta in
+`locale/regia.json`). In regia il sito arriva dal portatile stesso: internet non serve.
+
+**Rete tra telefono e portatile.** Devono stare sulla stessa rete, ma non serve quella di casa:
+- *Hotspot del portatile*: Windows → Impostazioni → Rete e Internet → Hotspot mobile. Il telefono
+  si collega a quella rete; l'indirizzo della console di solito è `http://192.168.137.1:8080/regia/`.
+  Su alcuni portatili l'hotspot si accende solo se il portatile è già collegato a una rete.
+- *Hotspot del telefono*: il portatile si collega al telefono. Funziona sempre, anche senza wifi
+  di casa; usa l'indirizzo che `regia.js` stampa dopo il collegamento (riavvialo se serve).
+
+Al primo avvio Windows chiede se consentire a Node l'accesso alla rete: rispondi sì per le reti
+private. Se il telefono avvisa che "la rete non ha accesso a internet", scegli di restare collegato.
+
+**Cosa cambia sullo schermo in regia.** I giocatori possono usare tastiera e mouse solo su
+Bacheca, Timeline e Archivio (anche cliccando la legenda in basso). Media, Orologio, sblocco degli
+episodi e azzeramento della timeline si comandano solo dal telefono; mentre lo schermo mostra un
+media o l'orologio, la tastiera del portatile non lo può togliere. Chrome blocca l'audio finché
+nessuno ha cliccato la pagina: allo schermo compare un riquadro "clicca qui", fallo una volta
+prima di cena (la console avvisa se l'audio è ancora bloccato).
+
+**La console** mostra cosa c'è sullo schermo e cosa sta suonando (con pausa, ±10 s, da capo,
+chiudi), l'elenco dei media sbloccati, i pulsanti delle viste, lo sblocco degli episodi e
+l'azzeramento della timeline. Se lo schermo si ricarica, gli episodi già aperti si riaprono da
+soli: le passphrase restano nella memoria di `regia.js` (mai su disco) finché non lo chiudi.
+
+**Scaletta** (facoltativa): in `locale/scaletta.json` (privato, svela la trama) scrivi i passi
+della serata; la console mostra un grande pulsante "▶ prossimo passo" e l'elenco completo.
+
+```json
+[
+  { "titolo": "La morte", "azioni": [{ "vista": 4 }, { "attendi": 8 }, { "media": "M01" }] },
+  { "titolo": "Telecamera", "azioni": [{ "media": "M02" }] }
+]
+```
+
+Azioni: `{"vista": n}` (1 Bacheca, 2 Timeline, 3 Media, 4 Orologio, 5 Archivio),
+`{"media": "id"}` (lo porta a schermo pieno e lo fa partire), `{"attendi": secondi}`.
+La scaletta si rilegge a ogni apertura della console.
+
+Senza `regia.js` (es. aprendo il sito da GitHub Pages) lo schermo funziona come prima, tutto da tastiera.
 
 ## Schermo centrale: tasti
 

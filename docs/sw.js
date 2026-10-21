@@ -12,7 +12,10 @@ self.addEventListener('activate', function (e) { e.waitUntil(self.clients.claim(
 
 self.addEventListener('fetch', function (e) {
   var req = e.request;
-  if (req.method !== 'GET' || new URL(req.url).origin !== self.location.origin) return;
+  var url = new URL(req.url);
+  if (req.method !== 'GET' || url.origin !== self.location.origin) return;
+  // I canali della regia sono in tempo reale: mai dalla cache.
+  if (url.pathname.indexOf('/regia/') !== -1) return;
 
   // Video e audio chiedono pezzi del file (Range): si servono dalla copia intera in cache.
   if (req.headers.has('range')) {

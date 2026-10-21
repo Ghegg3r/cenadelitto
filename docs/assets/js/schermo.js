@@ -8,6 +8,10 @@
 
   var viste = {};
   var corrente = 0;
+  var regia = false;        // true quando lo schermo è pilotato dal telefono (scripts/regia.js)
+  var ascoltatori = [];     // chi vuole sapere quando cambia qualcosa (la regia)
+  var segnalaPronto;
+  var pronto = new Promise(function (r) { segnalaPronto = r; });
   var stato = {
     config: null, cast: [], luoghi: [],
     episodio: 1, titoli: {},
@@ -78,6 +82,7 @@
 
   async function sblocca(passphrase) {
     var ep = prossimoEpisodio();
+    if (!ep) throw new Error('Tutti gli episodi sono già aperti.');
     var blob = await caricaJson(ep.file);
     var pacchetto = await Cripta.decifra(blob, Cripta.segretoEpisodio(passphrase));
     await alleggerisci(pacchetto);
@@ -86,7 +91,10 @@
     aggiornaTestata();
     rendiTutto();
     avviso('Episodio ' + ep.n + (stato.titoli[ep.n] ? ' — ' + stato.titoli[ep.n] : '') + ' aperto');
+    notifica();
   }
+
+  function notifica() { ascoltatori.forEach(function (f) { f(); }); }
 
   /* ---------- interfaccia comune ---------- */
 
@@ -111,7 +119,11 @@
     history.replaceState(null, '', '#' + n);
     aggiornaTestata();
     if (viste[n].entra) viste[n].entra();
+    notifica();
   }
+
+  // In regia i giocatori usano solo le viste "giocatori"; le altre le apre solo il telefono.
+  function perGiocatori(n) { return !regia || viste[n].giocatori; }
 
   var timerAvviso;
   function avviso(testo) {
@@ -125,13 +137,14 @@
   function rendiTasti() {
     var t = $('tasti');
     t.textContent = '';
-    Object.keys(viste).forEach(function (n) {
-      var s = el('span', null);
+    Object.keys(viste).filter(perGiocatori).forEach(function (n) {
+      var s = el('span', 'tasto-vista');
       s.appendChild(el('kbd', null, n));
       s.appendChild(document.createTextNode(' ' + viste[n].nome));
+      s.addEventListener('click', function () { if (!bloccato()) mostra(parseInt(n, 10)); });
       t.appendChild(s);
     });
-    [['S', 'Sblocca episodio'], ['F', 'Schermo intero']].forEach(function (c) {
+    (regia ? [['F', 'Schermo intero']] : [['S', 'Sblocca episodio'], ['F', 'Schermo intero']]).forEach(function (c) {
       var s = el('span', null);
       s.appendChild(el('kbd', null, c[0]));
       s.appendChild(document.createTextNode(' ' + c[1]));
@@ -199,6 +212,15 @@
 
   /* ---------- tastiera e inattività ---------- */
 
+  // Mentre la regia mostra una vista riservata (media, orologio), i giocatori non la possono lasciare.
+  function bloccato() { return regia && !viste[corrente].giocatori; }
+
+  function attivaRegia() {
+    regia = true;
+    document.body.classList.add('in-regia');
+    rendiTasti();
+  }
+
   function inCampoDiTesto(t) {
     return t && (t.tagName === 'INPUT' || t.tagName === 'TEXTAREA' || t.isContentEditable);
   }
@@ -218,9 +240,14 @@
       e.preventDefault();
       return;
     }
-    if (/^[1-9]$/.test(e.key) && viste[e.key]) { mostra(parseInt(e.key, 10)); e.preventDefault(); return; }
-    if (e.key === 's' || e.key === 'S') { apriSblocco(); e.preventDefault(); return; }
     if (e.key === 'f' || e.key === 'F') { schermoIntero(); e.preventDefault(); return; }
+    if (bloccato()) { e.preventDefault(); return; }
+    if (/^[1-9]$/.test(e.key) && viste[e.key]) {
+      if (perGiocatori(e.key)) mostra(parseInt(e.key, 10));
+      e.preventDefault();
+      return;
+    }
+    if (!regia && (e.key === 's' || e.key === 'S')) { apriSblocco(); e.preventDefault(); return; }
     var v = viste[corrente];
     if (v && v.tasto && v.tasto(e)) e.preventDefault();
   }
@@ -274,8 +301,18 @@
     var iniziale = parseInt(location.hash.slice(1), 10);
     mostra(viste[iniziale] ? iniziale : 1);
     Offline.assicura(elencoFile());
+    segnalaPronto();
   }
 
-  window.Schermo = { registra: registra, el: el, ingrandisci: ingrandisci, avviso: avviso, mostra: mostra };
+  window.Schermo = {
+    registra: registra, el: el, ingrandisci: ingrandisci, avviso: avviso, mostra: mostra,
+    sblocca: sblocca, notifica: notifica, attivaRegia: attivaRegia, pronto: pronto,
+    inRegia: function () { return regia; },
+    ascolta: function (f) { ascoltatori.push(f); },
+    vista: function (n) { return viste[n]; },
+    corrente: function () { return corrente; },
+    stato: function () { return stato; },
+    prossimoEpisodio: function () { return prossimoEpisodio(); }
+  };
   document.addEventListener('DOMContentLoaded', avvia);
 })();
