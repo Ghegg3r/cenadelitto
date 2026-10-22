@@ -233,8 +233,8 @@ Dopo il primo caricamento con la rete, tutto funziona senza wifi (service worker
 
 - **Schermo centrale**: al primo avvio scarica tutto ciò che gli serve, video ed episodi cifrati compresi.
 - **Schede**: ogni telefono scarica solo la propria scheda, mai le altre.
-- Il sito risponde subito dalla cache e si aggiorna in background quando la rete c'è: dopo una
-  modifica pubblicata, ricarica **due volte** per vedere la versione nuova.
+- Con la rete, pagine e script arrivano sempre freschi (attesa massima 3 secondi, poi la copia
+  salvata): dopo una modifica pubblicata basta ricaricare.
 - Se sostituisci un video, dagli un nome di file nuovo: i file media in cache non vengono riscaricati.
 
 ## Prima della serata

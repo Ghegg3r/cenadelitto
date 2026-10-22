@@ -39,7 +39,7 @@ indovinare un URL. Quindi:
   con la chiave personale del giocatore, che sta nel `#frammento` del link; ep. 2+ con
   passphrase dell'episodio + chiave personale. Così il repo può essere pubblico.
 - Crittografia unica in `docs/assets/js/cripta.js`, usata sia dal browser sia dagli script Node.
-- Offline: `docs/sw.js` stale-while-revalidate; ogni pagina mette in cache solo i propri file
+- Offline: `docs/sw.js` rete-prima (timeout 3 s) per codice e dati, cache-prima per media; ogni pagina mette in cache solo i propri file
   (`offline.js`), mai un elenco globale che nomini le schede.
 - Script: `scripts/build-schede.js`, `scripts/cifra.js`, `scripts/serve.js`, `scripts/regia.js`, `scripts/regia-online.js`. Istruzioni nel README.
 - Regia: l'organizzatore interpreta la vittima e dirige dal telefono (console in `docs/regia/`).

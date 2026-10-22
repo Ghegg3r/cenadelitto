@@ -1,11 +1,17 @@
 /*
  * Service worker: dopo il primo caricamento il sito funziona senza rete.
- * Strategia stale-while-revalidate: risponde subito dalla cache (il wifi della
- * casa è lento, non solo assente) e aggiorna in background quando la rete c'è.
+ *
+ * - Pagine, script, stili e dati: prima la rete (al massimo 3 secondi, il wifi della casa
+ *   è lento, non solo assente), poi la copia in cache. Così dopo un aggiornamento non si
+ *   mescolano mai file vecchi e nuovi.
+ * - Immagini, audio e video: dalla cache se ci sono (sono pesanti e non cambiano nome),
+ *   altrimenti dalla rete.
  */
 'use strict';
 
 var CACHE = 'cena-delitto';
+var ATTESA_RETE = 3000;
+var PESANTI = /\.(svg|png|jpe?g|webp|gif|mp4|webm|mp3|m4a|ogg|wav)$/i;
 
 self.addEventListener('install', function () { self.skipWaiting(); });
 self.addEventListener('activate', function (e) { e.waitUntil(self.clients.claim()); });
@@ -22,24 +28,40 @@ self.addEventListener('fetch', function (e) {
     e.respondWith(rispondiRange(req));
     return;
   }
+  e.respondWith(PESANTI.test(url.pathname) ? primaCache(req) : primaRete(req));
+});
 
-  e.respondWith(caches.open(CACHE).then(function (cache) {
-    var chiave = req.url.split('#')[0];
-    return cache.match(chiave, { ignoreVary: true }).then(function (inCache) {
-      var dallaRete = fetch(req).then(function (risposta) {
-        if (risposta.ok && risposta.status === 200) cache.put(chiave, risposta.clone());
-        return risposta;
-      });
-      if (inCache) {
-        dallaRete.catch(function () {});
-        return inCache;
-      }
-      return dallaRete.catch(function () {
-        return new Response('Offline e non ancora in cache.', { status: 503 });
+function chiaveDi(req) { return req.url.split('#')[0]; }
+
+function salva(cache, req, risposta) {
+  if (risposta.ok && risposta.status === 200) cache.put(chiaveDi(req), risposta.clone());
+  return risposta;
+}
+
+function primaRete(req) {
+  return caches.open(CACHE).then(function (cache) {
+    var dallaRete = fetch(req).then(function (r) { return salva(cache, req, r); });
+    var scaduto = new Promise(function (ok) { setTimeout(ok, ATTESA_RETE); });
+    return Promise.race([dallaRete.catch(function () { return null; }), scaduto]).then(function (r) {
+      if (r) return r;
+      return cache.match(chiaveDi(req), { ignoreVary: true }).then(function (inCache) {
+        if (inCache) return inCache;
+        // Niente in cache: si aspetta comunque la rete, se mai risponde.
+        return dallaRete.catch(function () {
+          return new Response('Offline e non ancora in cache.', { status: 503 });
+        });
       });
     });
-  }));
-});
+  });
+}
+
+function primaCache(req) {
+  return caches.open(CACHE).then(function (cache) {
+    return cache.match(chiaveDi(req), { ignoreVary: true }).then(function (inCache) {
+      return inCache || fetch(req).then(function (r) { return salva(cache, req, r); });
+    });
+  });
+}
 
 function rispondiRange(req) {
   return caches.open(CACHE).then(function (cache) {

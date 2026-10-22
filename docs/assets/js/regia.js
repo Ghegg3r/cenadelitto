@@ -170,5 +170,11 @@
     } catch (e) { /* nessuna regia: si usa la tastiera */ }
   }
 
+  // Link di regia incollato su una pagina già aperta: cambia solo il frammento e il browser
+  // non ricarica. Si ricarica a mano, così il codice viene letto.
+  window.addEventListener('hashchange', function () {
+    if (/regia=/.test(location.hash)) location.reload();
+  });
+
   avvia();
 })();
