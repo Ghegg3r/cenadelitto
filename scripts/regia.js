@@ -1,11 +1,12 @@
 #!/usr/bin/env node
 /*
- * Regia della serata: gira sul portatile collegato alla TV.
+ * Regia LOCALE della serata (senza internet): gira sul portatile collegato alla TV.
+ * Per la regia via internet vedi scripts/regia-online.js.
  *
  *   node scripts/regia.js [porta]
  *
  * - Serve il sito da docs/ (nessuna connessione internet necessaria).
- * - Serve la console di regia (cartella regia/) al telefono dell'organizzatore.
+ * - Serve la console di regia (docs/regia/) al telefono dell'organizzatore.
  * - Fa da tramite: comandi telefono -> schermo, stato schermo -> telefono (Server-Sent Events).
  *
  * Sicurezza: i comandi richiedono il PIN (salvato in locale/regia.json). Lo schermo si
@@ -21,10 +22,10 @@ const os = require('node:os');
 const path = require('node:path');
 const nodeCrypto = require('node:crypto');
 const { statico } = require('./serve.js');
-const { DOCS, LOCALE, RADICE, leggiJson, scriviJson } = require('./comune.js');
+const { DOCS, LOCALE, leggiJson, scriviJson } = require('./comune.js');
 
 const PORTA = parseInt(process.argv[2] || '8080', 10);
-const CARTELLA_REGIA = path.join(RADICE, 'regia');
+const CARTELLA_REGIA = path.join(DOCS, 'regia');
 const FILE_CONFIG = path.join(LOCALE, 'regia.json');
 const FILE_SCALETTA = path.join(LOCALE, 'scaletta.json');
 

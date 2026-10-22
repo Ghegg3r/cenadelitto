@@ -134,3 +134,5 @@ section { display: grid; gap: 10px; }
 .griglia-viste button.attiva { border-color: var(--accento); color: var(--accento); }
 
 .riga { display: flex; gap: 8px; }
+
+.mini { min-height: 34px; margin-top: 6px; padding: 0 10px; font-size: 13px; color: var(--testo-tenue); }

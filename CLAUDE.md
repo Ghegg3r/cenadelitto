@@ -41,10 +41,14 @@ indovinare un URL. Quindi:
 - Crittografia unica in `docs/assets/js/cripta.js`, usata sia dal browser sia dagli script Node.
 - Offline: `docs/sw.js` stale-while-revalidate; ogni pagina mette in cache solo i propri file
   (`offline.js`), mai un elenco globale che nomini le schede.
-- Script: `scripts/build-schede.js`, `scripts/cifra.js`, `scripts/serve.js`, `scripts/regia.js`. Istruzioni nel README.
-- Regia: l'organizzatore interpreta la vittima e dirige dal telefono. `scripts/regia.js` (sul portatile
-  della TV) serve il sito e fa da tramite via SSE; console in `regia/`. In regia lo schermo è dei
-  giocatori solo per Bacheca/Timeline/Archivio; media, orologio, sblocchi e azzeramento solo dal telefono.
+- Script: `scripts/build-schede.js`, `scripts/cifra.js`, `scripts/serve.js`, `scripts/regia.js`, `scripts/regia-online.js`. Istruzioni nel README.
+- Regia: l'organizzatore interpreta la vittima e dirige dal telefono (console in `docs/regia/`).
+  Modo principale ONLINE: schermo e console si parlano via ntfy.sh (`docs/assets/js/ponte.js`),
+  messaggi cifrati con il codice di regia che sta solo nel #frammento dei due link
+  (`scripts/regia-online.js`); solo messaggi sui cambiamenti, per il limite giornaliero del servizio.
+  Alternativa LOCALE senza internet: `scripts/regia.js` serve il sito e fa da tramite via SSE.
+  In regia lo schermo è dei giocatori solo per Bacheca/Timeline/Archivio; media, orologio,
+  sblocchi e azzeramento solo dal telefono.
 
 ## Stile
 Halloween, ma sobrio: non cartoonesco. Carta invecchiata, macchina da scrivere,

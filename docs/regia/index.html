@@ -11,8 +11,8 @@
 <body>
   <form id="accesso" class="accesso" hidden autocomplete="off">
     <p class="etichetta">Regia</p>
-    <label for="pin">PIN (lo stampa il portatile all'avvio)</label>
-    <input id="pin" inputmode="numeric" pattern="[0-9]*" maxlength="6" autocomplete="off">
+    <label for="pin" id="accesso-etichetta">PIN</label>
+    <input id="pin" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false">
     <button>Entra</button>
     <p class="esito" id="accesso-esito"></p>
   </form>
@@ -22,6 +22,7 @@
       <div>
         <p class="etichetta">Regia</p>
         <p id="collegamento" class="collegamento">Collegamento…</p>
+        <button id="verifica" class="mini" hidden>Verifica schermo</button>
       </div>
       <div class="testa-dx">
         <p id="episodio"></p>
@@ -79,6 +80,8 @@
     </main>
   </div>
 
+  <script src="../assets/js/cripta.js"></script>
+  <script src="../assets/js/ponte.js"></script>
   <script src="console.js"></script>
 </body>
 </html>

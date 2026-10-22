@@ -9,7 +9,7 @@
   'use strict';
 
   var radice, lista, palco, player, schedaAudio, titolo, sottotitolo, tempo, durata, avanzamento, invito;
-  var elenco = [], scelto = 0, caricato = null, ultimoAvviso = 0, errore = '';
+  var elenco = [], scelto = 0, caricato = null, errore = '';
 
   function formato(s) {
     if (!isFinite(s)) return '0:00';
@@ -86,7 +86,7 @@
   function inOnda() {
     if (!caricato || !radice.classList.contains('sul-palco')) return null;
     return { id: caricato.id, titolo: caricato.titolo, tempo: player.currentTime, durata: player.duration || 0,
-      inPausa: player.paused, finito: player.ended, errore: errore };
+      inPausa: player.paused, finito: player.ended, errore: errore, aggiornato: Date.now() };
   }
 
   function aggiornaStato() {
@@ -96,9 +96,6 @@
     invito.hidden = !player.paused;
     invito.textContent = player.ended ? '↺  R per ricominciare' : '▶  Spazio';
     invito.classList.toggle('in-regia', Schermo.inRegia());
-    // La console del telefono segue l'avanzamento, una volta al secondo basta.
-    var ora = Date.now();
-    if (ora - ultimoAvviso > 900 || player.paused) { ultimoAvviso = ora; Schermo.notifica(); }
   }
 
   function tasto(e) {
@@ -142,8 +139,10 @@
       invito = palco.appendChild(Schermo.el('div', 'media-invito'));
 
       palco.addEventListener('click', function () { if (!Schermo.inRegia()) playPausa(); });
-      ['timeupdate', 'loadedmetadata', 'play', 'pause', 'ended', 'seeked'].forEach(function (t) {
-        player.addEventListener(t, aggiornaStato);
+      player.addEventListener('timeupdate', aggiornaStato);
+      // La regia viene avvisata solo dei cambiamenti veri: l'avanzamento lo calcola la console.
+      ['loadedmetadata', 'play', 'pause', 'ended', 'seeked'].forEach(function (t) {
+        player.addEventListener(t, function () { aggiornaStato(); Schermo.notifica(); });
       });
     },
     render: render,
